@@ -1,5 +1,6 @@
 package com.yushun.blog.controller.front;
 
+import com.yushun.blog.common.result.Result;
 import com.yushun.blog.model.channel.Channel;
 import com.yushun.blog.service.ChannelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,9 @@ public class FrontChannelController {
     private ChannelService channelService;
 
     @GetMapping("/findAll")
-    public List<Channel> findAllChannel() {
+    public Result findAllChannel() {
         List<Channel> list = channelService.list();
-        return list;
+        return Result.ok();
     }
 
     @DeleteMapping("/{id}")
