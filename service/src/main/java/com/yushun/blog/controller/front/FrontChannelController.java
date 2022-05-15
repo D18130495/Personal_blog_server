@@ -17,6 +17,7 @@ import java.util.List;
  * @since 2022-5-15
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("/front/channel")
 public class FrontChannelController {
@@ -26,11 +27,17 @@ public class FrontChannelController {
     @GetMapping("/findAll")
     public Result findAllChannel() {
         List<Channel> list = channelService.list();
-        return Result.ok();
+        return Result.ok(list);
     }
 
     @DeleteMapping("/{id}")
     public void remove(@PathVariable Long id) {
         channelService.removeById(id);
+    }
+
+    @GetMapping("/queryByPos/{pos}")
+    public Result getChannelByPos(@PathVariable String pos){
+        System.out.println(pos);
+        return Result.ok("123");
     }
 }
