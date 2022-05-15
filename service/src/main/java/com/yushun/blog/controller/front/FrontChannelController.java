@@ -27,4 +27,9 @@ public class FrontChannelController {
         List<Channel> list = channelService.list();
         return list;
     }
+
+    @DeleteMapping("/{id}")
+    public void remove(@PathVariable Long id) {
+        channelService.removeById(id);
+    }
 }
