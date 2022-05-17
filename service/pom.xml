@@ -68,7 +68,6 @@
                     <include>**/*.xml</include>
                     <include>**/*.properties</include>
                 </includes>
-                <filtering>false</filtering>
             </resource>
 
             <resource>
@@ -78,7 +77,6 @@
                     <include>**/*.xml</include>
                     <include>**/*.properties</include>
                 </includes>
-                <filtering>false</filtering>
             </resource>
         </resources>
     </build>

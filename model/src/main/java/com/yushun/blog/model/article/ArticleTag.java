@@ -1,13 +1,10 @@
 package com.yushun.blog.model.article;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 
 import com.yushun.blog.model.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -32,5 +29,5 @@ public class ArticleTag extends BaseEntity implements Serializable {
 
     private Integer tagId;
 
-//    private Article article;
+    private Article article;
 }

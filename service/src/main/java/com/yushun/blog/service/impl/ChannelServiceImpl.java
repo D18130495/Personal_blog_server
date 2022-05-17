@@ -1,10 +1,13 @@
 package com.yushun.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yushun.blog.mapper.ChannelMapper;
 import com.yushun.blog.model.channel.Channel;
 import com.yushun.blog.service.ChannelService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,4 +21,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> implements ChannelService {
 
+    @Override
+    public List<Channel> getChannelPos(String pos) {
+        QueryWrapper<Channel> wrapper = new QueryWrapper<>();
+        wrapper.eq("pos", pos);
+        List<Channel> channelList = baseMapper.selectList(wrapper);
+
+        return channelList;
+    }
 }

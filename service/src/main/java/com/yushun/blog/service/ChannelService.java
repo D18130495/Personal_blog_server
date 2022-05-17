@@ -3,6 +3,8 @@ package com.yushun.blog.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yushun.blog.model.channel.Channel;
 
+import java.util.List;
+
 /**
  * <p>
  * channel service
@@ -13,5 +15,5 @@ import com.yushun.blog.model.channel.Channel;
  */
 
 public interface ChannelService extends IService<Channel> {
-
+    List<Channel> getChannelPos(String pos);
 }

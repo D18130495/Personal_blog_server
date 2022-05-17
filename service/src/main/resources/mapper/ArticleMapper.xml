@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yushun.blog.mapper.ArticleMapper">
+    <resultMap type="com.yushun.blog.model.article.Article" id="Article">
+        <id column="id" property="id"/>
+        <result column="channel_id"  property="channelId"/>
+        <result column="title"  property="title"/>
+        <result column="title_img"  property="titleImg"/>
+        <result column="summary"  property="summary"/>
+        <result column="url"  property="url"/>
+        <result column="content"  property="content"/>
+        <result column="status"  property="status"/>
+        <result column="comment_status"  property="commentStatus"/>
+        <result column="rotation"  property="rotation"/>
+        <result column="top"  property="top"/>
+        <result column="create_date"  property="createDate"/>
+        <result column="create_user"  property="createUser"/>
+        <result column="update_date"  property="updateDate"/>
+        <result column="article_view"  property="articleView"/>
+    </resultMap>
+
+    <select id="getRandomArticle" resultMap="Article">
+        SELECT id, title FROM `tb_article` ORDER BY RAND() LIMIT 2
+    </select>
+</mapper>

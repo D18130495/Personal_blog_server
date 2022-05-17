@@ -32,7 +32,7 @@ public class Channel extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "上级栏目")
     @TableField("parent_id")
-    private Integer parentId;
+    private Long parentId;
 
     @ApiModelProperty(value = "栏目图片")
     @TableField("channel_img")
@@ -91,11 +91,11 @@ public class Channel extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
