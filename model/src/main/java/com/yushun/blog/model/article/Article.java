@@ -65,8 +65,8 @@ public class Article extends BaseEntity implements Serializable  {
     @ApiModelProperty(value = "0/null不置顶，1置顶")
     private Integer top;
 
-    @ApiModelProperty(value = "创建人")
-    private Long createUser;
+    @ApiModelProperty(value = "创建人ID")
+    private Long createUserId;
 
     @TableField(exist = false)
     private List<Map<String,Object>> articleAttachments;
@@ -185,12 +185,12 @@ public class Article extends BaseEntity implements Serializable  {
         this.top = top;
     }
 
-    public Long getCreateUser() {
-        return createUser;
+    public Long getCreateUserId() {
+        return createUserId;
     }
 
-    public void setCreateUser(Long createUser) {
-        this.createUser = createUser;
+    public void setCreateUserId(Long createUserId) {
+        this.createUserId = createUserId;
     }
 
     public List<Map<String, Object>> getArticleAttachments() {

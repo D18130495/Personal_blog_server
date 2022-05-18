@@ -16,4 +16,6 @@ import java.util.List;
 
 public interface ArticleService extends IService<Article> {
     List<Article> getRandomArticle();
+
+    List<Article> getArticleByChannelId(Long channelId);
 }

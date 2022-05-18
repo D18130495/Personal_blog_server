@@ -22,7 +22,7 @@ import java.util.List;
 public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> implements ChannelService {
 
     @Override
-    public List<Channel> getChannelPos(String pos) {
+    public List<Channel> getChannelByPos(String pos) {
         QueryWrapper<Channel> wrapper = new QueryWrapper<>();
         wrapper.eq("pos", pos);
         List<Channel> channelList = baseMapper.selectList(wrapper);

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -20,4 +21,6 @@ import java.util.List;
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
     List<Article> getRandomArticle();
+
+    List<Article> queryArticleByChannelId(Map<String, Object> paramMap);
 }

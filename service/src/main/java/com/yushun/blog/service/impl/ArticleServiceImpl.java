@@ -2,13 +2,15 @@ package com.yushun.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yushun.blog.common.utils.UserNullUtils;
 import com.yushun.blog.mapper.ArticleMapper;
+import com.yushun.blog.mapper.UserMapper;
 import com.yushun.blog.model.article.Article;
+import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +27,35 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Autowired
     private ArticleMapper articleMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public List<Article> getRandomArticle() {
         List<Article> articleList = articleMapper.getRandomArticle();
-//        List<Article> articleList = new ArrayList<>();
-//        articleList.add(baseMapper.selectById(60));
-//        System.out.println(baseMapper.selectById(60).getTitleImg());
+
         return articleList;
+    }
+
+    @Override
+    public List<Article> getArticleByChannelId(Long channelId) {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("channel_Id", channelId).orderByDesc("id").last("limit 5");
+
+        List<Article> list = baseMapper.selectList(wrapper);
+
+        for(Article article : list) {
+            QueryWrapper<User> userWrapper = new QueryWrapper<>();
+            userWrapper.eq("id", article.getCreateUserId());
+            User user = userMapper.selectOne(userWrapper);
+
+            if(user != null) {
+                article.setUser(user);
+            }else {
+                article.setUser(UserNullUtils.userIsNull());
+            }
+        }
+
+        return list;
     }
 }

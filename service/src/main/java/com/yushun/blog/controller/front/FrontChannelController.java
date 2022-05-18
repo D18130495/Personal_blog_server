@@ -1,7 +1,9 @@
 package com.yushun.blog.controller.front;
 
 import com.yushun.blog.common.result.Result;
+import com.yushun.blog.model.article.Article;
 import com.yushun.blog.model.channel.Channel;
+import com.yushun.blog.service.ArticleService;
 import com.yushun.blog.service.ChannelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -28,24 +30,27 @@ public class FrontChannelController {
     @Autowired
     private ChannelService channelService;
 
-    @GetMapping("/findAll")
-    public Result findAllChannel() {
-        List<Channel> list = channelService.list();
-        return Result.ok(list);
-    }
+    @Autowired
+    private ArticleService articleService;
 
-    @DeleteMapping("/{id}")
-    public void remove(@PathVariable Long id) {
-        channelService.removeById(id);
-    }
+//    @GetMapping("/findAll")
+//    public Result findAllChannel() {
+//        List<Channel> list = channelService.list();
+//        return Result.ok(list);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void remove(@PathVariable Long id) {
+//        channelService.removeById(id);
+//    }
 
-    @GetMapping("/queryByPos/{pos}")
+    @GetMapping("/getChannelByPos/{pos}")
     public Result getChannelByPos(@PathVariable String pos){
         if (StringUtils.isEmpty(pos)){
             return Result.fail();
         }
 
-        List<Channel> channelPos = channelService.getChannelPos(pos.toUpperCase());
+        List<Channel> channelPos = channelService.getChannelByPos(pos.toUpperCase());
 
         List<Map<String,Object>> mapList = new ArrayList<>();
         for (Channel channel : channelPos) {
@@ -77,5 +82,12 @@ public class FrontChannelController {
             }
         }
         return Result.ok(mapList);
+    }
+
+    @GetMapping("/getArticleByChannelId/{channelId}")
+    public Result getArticleByChannelId(@PathVariable Long channelId){
+        List<Article> articleList = articleService.getArticleByChannelId(channelId);
+
+        return Result.ok(articleList);
     }
 }

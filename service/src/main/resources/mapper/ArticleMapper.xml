@@ -19,7 +19,31 @@
         <result column="article_view"  property="articleView"/>
     </resultMap>
 
+    <sql id="ArticleFindCriteria">
+        <where>
+            <if test="id != null">and id = #{id}</if>
+            <if test="channelId != null">and channel_id = #{channelId}</if>
+            <if test="title != null and title != ''">and title like concat('%',#{title},'%')</if>
+            <if test="titleImg != null and titleImg != ''">and title_img = #{titleImg}</if>
+            <if test="summary != null and summary != ''">and summary = #{summary}</if>
+            <if test="url != null and url != ''">and url = #{url}</if>
+            <if test="content != null and content != ''">and content = #{content}</if>
+            <if test="status != null">and status = #{status}</if>
+            <if test="commentStatus != null">and comment_status = #{commentStatus}</if>
+            <if test="rotation != null">and rotation = #{rotation}</if>
+            <if test="top != null">and top = #{top}</if>
+            <if test="createUser != null">and create_user = #{createUser}</if>
+        </where>
+    </sql>
+
     <select id="getRandomArticle" resultMap="Article">
         SELECT id, title FROM `tb_article` ORDER BY RAND() LIMIT 2
+    </select>
+
+    <select id="queryArticleByChannelId" resultMap="Article">
+        select id,title from tb_article
+        <include refid="ArticleFindCriteria"/>
+        order by id desc
+        limit 5
     </select>
 </mapper>
