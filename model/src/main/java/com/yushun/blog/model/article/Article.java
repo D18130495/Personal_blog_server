@@ -82,7 +82,7 @@ public class Article extends BaseEntity implements Serializable  {
     private List<Map<String,Object>> articleAttachments;
 
     @TableField(exist = false)
-    private List<Integer> selectTagList;
+    private List<Long> selectTagList;
 
     @TableField(exist = false)
     private List<Page> pageList;
@@ -201,11 +201,11 @@ public class Article extends BaseEntity implements Serializable  {
         this.articleAttachments = articleAttachments;
     }
 
-    public List<Integer> getSelectTagList() {
+    public List<Long> getSelectTagList() {
         return selectTagList;
     }
 
-    public void setSelectTagList(List<Integer> selectTagList) {
+    public void setSelectTagList(List<Long> selectTagList) {
         this.selectTagList = selectTagList;
     }
 

@@ -49,7 +49,10 @@ public class ArticleVo extends BaseEntity implements Serializable {
     private Integer orderBy;
 
     @ApiModelProperty(value = "创建人")
-    private Long createUser;
+    private Long createUserId;
+
+    @ApiModelProperty(value = "文章点击数")
+    private Integer articleView;
 
     private List<Map<String,Object>> articleAttachments;
 
@@ -162,12 +165,20 @@ public class ArticleVo extends BaseEntity implements Serializable {
         this.orderBy = orderBy;
     }
 
-    public Long getCreateUser() {
-        return createUser;
+    public Long getCreateUserId() {
+        return createUserId;
     }
 
-    public void setCreateUser(Long createUser) {
-        this.createUser = createUser;
+    public void setCreateUserId(Long createUserId) {
+        this.createUserId = createUserId;
+    }
+
+    public Integer getArticleView() {
+        return articleView;
+    }
+
+    public void setArticleView(Integer articleView) {
+        this.articleView = articleView;
     }
 
     public List<Map<String, Object>> getArticleAttachments() {

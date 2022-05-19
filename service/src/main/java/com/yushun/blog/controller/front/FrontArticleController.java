@@ -100,4 +100,14 @@ public class FrontArticleController {
 
         return Result.ok(mostViewList);
     }
+
+    @GetMapping("/getRecommendedArticle/{articleId}")
+    public Result getRecommendedArticle(@PathVariable Long articleId) {
+        Article article = new Article();
+        article.setId(articleId);
+        article.setFront(false);
+        Article articleDetail = articleService.articleDetail(article);
+
+        return Result.ok(articleDetail);
+    }
 }
