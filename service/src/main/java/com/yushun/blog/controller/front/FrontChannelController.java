@@ -16,7 +16,7 @@ import java.util.Map;
 
 /**
  * <p>
- * channel Mapper
+ * front channel controller
  * </p>
  *
  * @author yushun zeng

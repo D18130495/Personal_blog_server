@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * channel POJO
+ * channel
  * </p>
  *
  * @author yushun zeng

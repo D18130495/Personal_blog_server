@@ -1,22 +1,22 @@
 package com.yushun.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yushun.blog.model.user.User;
+import com.yushun.blog.model.friend.FriendLink;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 
 /**
  * <p>
- * User Mapper
+ * Friend Link Mapper
  * </p>
  *
  * @author yushun zeng
- * @since 20202-5-18
+ * @since 20202-5-19
  */
 
 @Repository
 @Mapper
-public interface UserMapper extends BaseMapper<User> {
+public interface FriendLinkMapper extends BaseMapper<FriendLink> {
 
 }

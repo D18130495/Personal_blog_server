@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * <p>
- * channel Mapper
+ * front article controller
  * </p>
  *
  * @author yushun zeng
@@ -79,5 +79,25 @@ public class FrontArticleController {
             }
         }
         return Result.ok(paginatedArticlesList);
+    }
+
+    @GetMapping("/getNoticeByChannelId/{channelId}")
+    public Result getNoticeByChannelId(@PathVariable Long channelId) {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("channel_Id", channelId).orderByDesc("id").last("limit 4");
+
+        List<Article> noticesList = articleService.list(wrapper);
+
+        return Result.ok(noticesList);
+    }
+
+    @GetMapping("/getArticleByViewTime")
+    public Result getArticleByViewTime() {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("article_view").last("limit 8");
+
+        List<Article> mostViewList = articleService.list(wrapper);
+
+        return Result.ok(mostViewList);
     }
 }

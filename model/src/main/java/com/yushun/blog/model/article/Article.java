@@ -68,6 +68,16 @@ public class Article extends BaseEntity implements Serializable  {
     @ApiModelProperty(value = "创建人ID")
     private Long createUserId;
 
+    @ApiModelProperty(value = "文章点击数")
+    private Integer articleView;
+
+    @TableField(exist = false)
+    private User user;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "栏目")
+    private Channel channel;
+
     @TableField(exist = false)
     private List<Map<String,Object>> articleAttachments;
 
@@ -75,20 +85,10 @@ public class Article extends BaseEntity implements Serializable  {
     private List<Integer> selectTagList;
 
     @TableField(exist = false)
-    private User user;
-
-    @TableField(exist = false)
     private List<Page> pageList;
 
     @TableField(exist = false)
-    @ApiModelProperty(value = "栏目")
-    private Channel channel;
-
-    @TableField(exist = false)
     private List<ArticleVo> articleVo;
-
-    @TableField(exist = false)
-    private Integer articleView;
 
     @TableField(exist = false)
     private Boolean front;
