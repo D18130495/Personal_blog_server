@@ -20,7 +20,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/front/friendLink")
-public class FriendLinkController {
+public class FrontFriendLinkController {
     @Autowired
     private FriendLinkService friendLinkService;
 

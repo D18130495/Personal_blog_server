@@ -1,8 +1,14 @@
 package com.yushun.blog.controller.front;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yushun.blog.common.result.Result;
+import com.yushun.blog.common.utils.UserNullUtils;
+import com.yushun.blog.mapper.ChannelMapper;
+import com.yushun.blog.mapper.UserMapper;
 import com.yushun.blog.model.article.Article;
 import com.yushun.blog.model.channel.Channel;
+import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.ArticleService;
 import com.yushun.blog.service.ChannelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +39,12 @@ public class FrontChannelController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private ChannelMapper channelMapper;
+
 //    @GetMapping("/findAll")
 //    public Result findAllChannel() {
 //        List<Channel> list = channelService.list();
@@ -43,6 +55,13 @@ public class FrontChannelController {
 //    public void remove(@PathVariable Long id) {
 //        channelService.removeById(id);
 //    }
+
+    @GetMapping("/getChannelByChannelId/{channelId}")
+    public Result getChannelByChannelId(@PathVariable Long channelId){
+        Channel channel = channelService.getById(channelId);
+
+        return Result.ok(channel);
+    }
 
     @GetMapping("/getChannelByPos/{pos}")
     public Result getChannelByPos(@PathVariable String pos){
@@ -90,4 +109,38 @@ public class FrontChannelController {
 
         return Result.ok(articleList);
     }
+
+    @GetMapping("/getPaginatedChannelArticleByChannelId/{current}/{limit}/{channelId}")
+    public Result getArticleByChannelId(@PathVariable Long current,
+                                        @PathVariable Long limit,
+                                        @PathVariable Long channelId){
+        Page<Article> page = new Page<>(current, limit);
+
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("top", 0);
+        wrapper.eq("channel_id", channelId);
+
+        Page<Article> paginatedArticlesList = articleService.page(page, wrapper);
+
+        for(Article article : paginatedArticlesList.getRecords()) {
+            QueryWrapper<User> userWrapper = new QueryWrapper<>();
+            userWrapper.eq("id", article.getCreateUserId());
+            User user = userMapper.selectOne(userWrapper);
+
+            QueryWrapper<Channel> channelWrapper = new QueryWrapper<>();
+            channelWrapper.eq("id", article.getChannelId());
+            Channel channel = channelMapper.selectOne(channelWrapper);
+
+            article.setChannel(channel);
+
+            if(user != null) {
+                article.setUser(user);
+            }else {
+                article.setUser(UserNullUtils.userIsNull());
+            }
+        }
+        return Result.ok(paginatedArticlesList);
+    }
+
+
 }
