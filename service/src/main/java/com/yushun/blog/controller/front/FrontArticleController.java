@@ -106,7 +106,17 @@ public class FrontArticleController {
         Article article = new Article();
         article.setId(articleId);
         article.setFront(false);
-        Article articleDetail = articleService.articleDetail(article);
+        Article articleDetail = articleService.getArticleDetailByArticleId(article);
+
+        return Result.ok(articleDetail);
+    }
+
+    @GetMapping("/getArticleById/{articleId}")
+    public Result getArticleById(@PathVariable Long articleId){
+        Article article = new Article();
+        article.setId(articleId);
+        article.setFront(true);
+        Article articleDetail = articleService.getArticleDetailByArticleId(article);
 
         return Result.ok(articleDetail);
     }

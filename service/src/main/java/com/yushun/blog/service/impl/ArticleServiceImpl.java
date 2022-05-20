@@ -100,7 +100,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public Article articleDetail(Article article) {
+    public Article getArticleDetailByArticleId(Article article) {
         Long articleId = article.getId();
 
         Article articleDetail = baseMapper.selectById(articleId);
