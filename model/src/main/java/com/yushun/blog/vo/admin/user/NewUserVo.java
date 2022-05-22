@@ -1,4 +1,4 @@
-package com.yushun.blog.vo.user;
+package com.yushun.blog.vo.admin.user;
 
 public class NewUserVo {
     private String userName;
@@ -49,16 +49,5 @@ public class NewUserVo {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "NewUserVo{" +
-                "userName='" + userName + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", status='" + status + '\'' +
-                '}';
     }
 }

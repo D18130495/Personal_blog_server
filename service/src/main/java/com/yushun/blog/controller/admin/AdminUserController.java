@@ -6,9 +6,10 @@ import com.yushun.blog.common.result.Result;
 import com.yushun.blog.common.utils.JwtUtils;
 import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.UserService;
-import com.yushun.blog.vo.user.NewUserVo;
-import com.yushun.blog.vo.user.UserLoginVo;
-import com.yushun.blog.vo.user.UserQueryVo;
+import com.yushun.blog.vo.admin.user.NewUserVo;
+import com.yushun.blog.vo.admin.user.UpdateUserVo;
+import com.yushun.blog.vo.admin.user.UserLoginVo;
+import com.yushun.blog.vo.admin.user.UserQueryVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -82,7 +83,7 @@ public class AdminUserController {
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
         user.setIsDeleted(0);
-        
+
         boolean save = userService.save(user);
 
         if(save) {
@@ -92,12 +93,42 @@ public class AdminUserController {
         }
     }
 
+    @PutMapping("/updateUser")
+    public Result updateUser(UpdateUserVo updateUserVo) {
+        User user = new User();
+        BeanUtils.copyProperties(updateUserVo, user);
+        user.setUpdateTime(new Date());
+
+        boolean update = userService.updateById(user);
+
+        if(update) {
+            return Result.ok().message("Successfully updated user");
+        }else {
+            return Result.fail().message("Failed to update user");
+        }
+    }
+
+    @DeleteMapping("/deleteUserById/{userId}")
+    public Result addNewUser(@PathVariable Long userId) {
+        User user = userService.getById(userId);
+        user.setUpdateTime(new Date());
+
+        boolean update = userService.updateById(user);
+
+        boolean delete = userService.removeById(userId);
+
+        if(update && delete) {
+            return Result.ok().message("Successfully deleted user");
+        }else {
+            return Result.fail().message("Failed to delete user");
+        }
+    }
+
     @GetMapping("/getUserQueryPaginatedList/{current}/{limit}")
     public Result getUserQueryPaginatedList(@PathVariable Long current,
                                             @PathVariable Long limit,
                                             UserQueryVo userQueryVo) {
         Page<User> page = new Page<>(current, limit);
-        System.out.println(userQueryVo.getUserName());
 
         QueryWrapper<User> wrapper = new QueryWrapper<>();
 

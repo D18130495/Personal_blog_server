@@ -1,4 +1,4 @@
-package com.yushun.blog.vo.user;
+package com.yushun.blog.vo.admin.user;
 
 public class UserLoginVo {
     private String userName;
