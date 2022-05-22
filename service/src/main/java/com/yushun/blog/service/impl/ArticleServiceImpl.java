@@ -100,6 +100,73 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
+    public List<Article> getToppedArticleListByChannelId(Long channelId) {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("top", 1);
+        wrapper.eq("channel_id", channelId);
+
+        List<Article> articleList = baseMapper.selectList(wrapper);
+
+        for (Article article : articleList) {
+            QueryWrapper<User> userWrapper = new QueryWrapper<>();
+            userWrapper.eq("id", article.getCreateUserId());
+            User user = userMapper.selectOne(userWrapper);
+
+            QueryWrapper<Channel> channelWrapper = new QueryWrapper<>();
+            channelWrapper.eq("id", article.getChannelId());
+            Channel channel = channelMapper.selectOne(channelWrapper);
+
+            article.setChannel(channel);
+
+            if(user != null) {
+                article.setUser(user);
+            }else {
+                article.setUser(UserNullUtils.userIsNull());
+            }
+        }
+        return articleList;
+    }
+
+    @Override
+    public List<Article> getToppedArticleByTagId(Long tagId) {
+        QueryWrapper<ArticleTag> articleTagWrapper = new QueryWrapper<>();
+        articleTagWrapper.eq("tag_id", tagId);
+
+        List<ArticleTag> articleTagList = articleTagMapper.selectList(articleTagWrapper);
+        List<Article> articleList = new ArrayList<>();
+
+        for (ArticleTag articleTag : articleTagList) {
+            QueryWrapper<Article> articleWrapper = new QueryWrapper<>();
+            articleWrapper.eq("id", articleTag.getArticleId());
+            articleWrapper.eq("top", 1);
+            Article article = baseMapper.selectOne(articleWrapper);
+
+            if(article == null) {
+                continue;
+            }
+
+            QueryWrapper<User> userWrapper = new QueryWrapper<>();
+            userWrapper.eq("id", article.getCreateUserId());
+            User user = userMapper.selectOne(userWrapper);
+
+            QueryWrapper<Channel> channelWrapper = new QueryWrapper<>();
+            channelWrapper.eq("id", article.getChannelId());
+            Channel channel = channelMapper.selectOne(channelWrapper);
+
+            article.setChannel(channel);
+
+            if(user != null) {
+                article.setUser(user);
+            }else {
+                article.setUser(UserNullUtils.userIsNull());
+            }
+
+            articleList.add(article);
+        }
+        return articleList;
+    }
+
+    @Override
     public Article getArticleDetailByArticleId(Article article) {
         Long articleId = article.getId();
 

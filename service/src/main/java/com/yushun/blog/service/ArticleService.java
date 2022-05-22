@@ -22,5 +22,9 @@ public interface ArticleService extends IService<Article> {
 
     List<Article> getToppedArticleList();
 
+    List<Article> getToppedArticleListByChannelId(Long channelId);
+
+    List<Article> getToppedArticleByTagId(Long tagId);
+
     Article getArticleDetailByArticleId(Article article);
 }

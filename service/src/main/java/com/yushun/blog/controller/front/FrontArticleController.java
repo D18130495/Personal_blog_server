@@ -3,9 +3,11 @@ package com.yushun.blog.controller.front;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yushun.blog.common.result.Result;
 import com.yushun.blog.common.utils.UserNullUtils;
+import com.yushun.blog.mapper.ArticleTagMapper;
 import com.yushun.blog.mapper.ChannelMapper;
 import com.yushun.blog.mapper.UserMapper;
 import com.yushun.blog.model.article.Article;
+import com.yushun.blog.model.article.ArticleTag;
 import com.yushun.blog.model.channel.Channel;
 import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.ArticleService;
@@ -13,7 +15,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -32,28 +37,45 @@ public class FrontArticleController {
     private ArticleService articleService;
 
     @Autowired
+    private ArticleTagMapper articleTagMapper;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Autowired
     private ChannelMapper channelMapper;
 
     @GetMapping("/getRandomArticle")
-    public Result getRandomArticle(){
+    public Result getRandomArticle() {
         List<Article> randomArticleList = articleService.getRandomArticle();
 
         return Result.ok(randomArticleList);
     }
 
     @GetMapping("/getToppedArticleList")
-    public Result getToppedArticleList(){
+    public Result getToppedArticleList() {
         List<Article> articleList = articleService.getToppedArticleList();
+
+        return Result.ok(articleList);
+    }
+
+    @GetMapping("/getToppedArticleListByChannelId/{channelId}")
+    public Result getToppedArticleListByChannelId(@PathVariable Long channelId) {
+        List<Article> articleList = articleService.getToppedArticleListByChannelId(channelId);
+
+        return Result.ok(articleList);
+    }
+
+    @GetMapping("/getToppedArticleByTagId/{tagId}")
+    public Result getToppedArticleByTagId(@PathVariable Long tagId) {
+        List<Article> articleList = articleService.getToppedArticleByTagId(tagId);
 
         return Result.ok(articleList);
     }
 
     @GetMapping("/getPaginatedArticlesList/{current}/{limit}")
     public Result getPaginatedArticlesList(@PathVariable Long current,
-                                           @PathVariable Long limit){
+                                           @PathVariable Long limit) {
         Page<Article> page = new Page<>(current, limit);
 
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
@@ -119,5 +141,67 @@ public class FrontArticleController {
         Article articleDetail = articleService.getArticleDetailByArticleId(article);
 
         return Result.ok(articleDetail);
+    }
+
+    @GetMapping("/getPaginatedTagArticleByTagId/{current}/{limit}/{tagId}")
+    public Result getPaginatedTagArticleByTagId(@PathVariable Long current,
+                                                @PathVariable Long limit,
+                                                @PathVariable Long tagId){
+        QueryWrapper<ArticleTag> articleTagWrapper = new QueryWrapper<>();
+        articleTagWrapper.eq("tag_id", tagId);
+
+        List<ArticleTag> articleTagList = articleTagMapper.selectList(articleTagWrapper);
+
+        List<Article> articleList = new ArrayList<>();
+
+        for (ArticleTag articleTag : articleTagList) {
+            QueryWrapper<Article> articleWrapper = new QueryWrapper<>();
+            articleWrapper.eq("id", articleTag.getArticleId());
+            Article article = articleService.getOne(articleWrapper);
+
+            if(article == null) {
+                continue;
+            }
+
+            QueryWrapper<User> userWrapper = new QueryWrapper<>();
+            userWrapper.eq("id", article.getCreateUserId());
+            User user = userMapper.selectOne(userWrapper);
+
+            QueryWrapper<Channel> channelWrapper = new QueryWrapper<>();
+            channelWrapper.eq("id", article.getChannelId());
+            Channel channel = channelMapper.selectOne(channelWrapper);
+
+            article.setChannel(channel);
+
+            if(user != null) {
+                article.setUser(user);
+            }else {
+                article.setUser(UserNullUtils.userIsNull());
+            }
+
+            articleList.add(article);
+        }
+
+        // pagination
+        Map<String, Object> paginatedArticlesList = new HashMap<>();
+
+        if(current == 0L) {
+            current = 1L;
+        }
+
+        long startIndex = (current - 1) * limit;
+        long endIndex = current * limit;
+        List<Article> subList;
+
+        if(current * limit <= articleList.size()) {
+            subList = articleList.subList((int) startIndex, (int) endIndex);
+        }else {
+            subList = articleList.subList((int) startIndex, articleList.size());
+        }
+
+        paginatedArticlesList.put("records", subList);
+        paginatedArticlesList.put("total", articleList.size());
+
+        return Result.ok(paginatedArticlesList);
     }
 }

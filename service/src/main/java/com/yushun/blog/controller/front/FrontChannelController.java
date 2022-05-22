@@ -141,6 +141,4 @@ public class FrontChannelController {
         }
         return Result.ok(paginatedArticlesList);
     }
-
-
 }
