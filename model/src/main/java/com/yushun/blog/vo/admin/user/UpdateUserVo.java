@@ -9,6 +9,8 @@ public class UpdateUserVo {
 
     private String password;
 
+    private String avatar;
+
     private String email;
 
     private String status;
@@ -43,6 +45,14 @@ public class UpdateUserVo {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getEmail() {

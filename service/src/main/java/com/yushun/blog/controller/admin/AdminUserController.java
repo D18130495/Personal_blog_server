@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yushun.blog.common.result.Result;
 import com.yushun.blog.common.utils.JwtUtils;
+import com.yushun.blog.common.utils.RequestUtils;
 import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.UserService;
 import com.yushun.blog.vo.admin.user.NewUserVo;
@@ -14,11 +15,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * <p>
@@ -102,7 +104,7 @@ public class AdminUserController {
         boolean update = userService.updateById(user);
 
         if(update) {
-            return Result.ok().message("Successfully updated user");
+            return Result.ok(user).message("Successfully updated user");
         }else {
             return Result.fail().message("Failed to update user");
         }
@@ -143,5 +145,17 @@ public class AdminUserController {
         Page<User> paginatedArticlesList = userService.page(page, wrapper);
 
         return Result.ok(paginatedArticlesList);
+    }
+
+    @PostMapping("/upload")
+    public Result upload(@RequestParam MultipartFile file, HttpServletRequest request) throws IOException {
+        String originalFilename = file.getOriginalFilename();
+        //获取文件名后缀
+        String ex = originalFilename.substring(originalFilename.lastIndexOf(".") + 1, originalFilename.length());
+        String newFileNamePrefix = UUID.randomUUID().toString();
+        String newFileName = newFileNamePrefix + "." + ex;
+        file.transferTo(new File("E:/Personal_blog/Personal_blog_client/public/images", newFileName));
+
+        return Result.ok(RequestUtils.getBasePath(request) + "images/" + newFileName).message("Successfully uploaded avatar");
     }
 }
