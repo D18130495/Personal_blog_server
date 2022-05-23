@@ -111,7 +111,7 @@ public class AdminUserController {
     }
 
     @DeleteMapping("/deleteUserById/{userId}")
-    public Result addNewUser(@PathVariable Long userId) {
+    public Result deleteUserById(@PathVariable Long userId) {
         User user = userService.getById(userId);
         user.setUpdateTime(new Date());
 
@@ -142,9 +142,9 @@ public class AdminUserController {
             wrapper.like("nick_name", userQueryVo.getNickName());
         }
 
-        Page<User> paginatedArticlesList = userService.page(page, wrapper);
+        Page<User> paginatedUserList = userService.page(page, wrapper);
 
-        return Result.ok(paginatedArticlesList);
+        return Result.ok(paginatedUserList);
     }
 
     @PostMapping("/upload")
@@ -154,8 +154,8 @@ public class AdminUserController {
         String ex = originalFilename.substring(originalFilename.lastIndexOf(".") + 1, originalFilename.length());
         String newFileNamePrefix = UUID.randomUUID().toString();
         String newFileName = newFileNamePrefix + "." + ex;
-        file.transferTo(new File("E:/Personal_blog/Personal_blog_client/public/images", newFileName));
+        file.transferTo(new File("E:/Personal_blog/Personal_blog_client/public/images/avatar", newFileName));
 
-        return Result.ok(RequestUtils.getBasePath(request) + "images/" + newFileName).message("Successfully uploaded avatar");
+        return Result.ok(RequestUtils.getBasePath(request) + "images/avatar/" + newFileName).message("Successfully uploaded avatar");
     }
 }

@@ -6,10 +6,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.yushun.blog.model.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import lombok.EqualsAndHashCode;
 
 /**
  * <p>
@@ -20,9 +17,7 @@ import lombok.EqualsAndHashCode;
  * @since 2022-5-17
  */
 
-@EqualsAndHashCode(callSuper = false)
 @TableName("tb_user")
-@ApiModel(value="User对象", description="User")
 public class User extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -71,10 +71,11 @@ public class Channel extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "创建人ID")
     @TableField("create_userId")
-    private Integer createUser;
+    private Long createUser;
 
-//    @ApiModelProperty(value = "发布人名称")
-//    private String userName;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "发布人名称")
+    private String userName;
 
     @TableField("pos")
     private String pos;
@@ -163,12 +164,20 @@ public class Channel extends BaseEntity implements Serializable {
         this.content = content;
     }
 
-    public Integer getCreateUser() {
+    public Long getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(Integer createUser) {
+    public void setCreateUser(Long createUser) {
         this.createUser = createUser;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPos() {
