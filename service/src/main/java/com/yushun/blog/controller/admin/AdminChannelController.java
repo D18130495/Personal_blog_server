@@ -9,7 +9,8 @@ import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.ChannelService;
 import com.yushun.blog.service.UserService;
 import com.yushun.blog.vo.admin.channel.ChannelQueryVo;
-import com.yushun.blog.vo.admin.user.NewUserVo;
+import com.yushun.blog.vo.admin.channel.ChannelUpdateVo;
+import com.yushun.blog.vo.admin.user.UpdateUserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -40,6 +41,13 @@ public class AdminChannelController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/getChannelByChannelId/{channelId}")
+    public Result getChannelByChannelId(@PathVariable Long channelId) {
+        Channel channel = channelService.getById(channelId);
+
+        return Result.ok(channel);
+    }
+
     @PostMapping("/addNewChannel")
     public Result addNewChannel(Channel newChannel) {
         List<Channel> channelList = channelService.list();
@@ -52,6 +60,11 @@ public class AdminChannelController {
 
         Channel channel = new Channel();
         BeanUtils.copyProperties(newChannel, channel);
+
+        if(channel.getParentId() == null) {
+            channel.setParentId(0L);
+        }
+
         channel.setCreateTime(new Date());
         channel.setUpdateTime(new Date());
         channel.setIsDeleted(0);
@@ -62,6 +75,26 @@ public class AdminChannelController {
             return Result.ok().message("Successfully added new channel");
         }else {
             return Result.fail().message("Failed to add new channel");
+        }
+    }
+
+    @PutMapping("/updateChannelByChannelId")
+    public Result updateChannelByChannelId(ChannelUpdateVo channelUpdateVo) {
+        Channel channel = new Channel();
+        BeanUtils.copyProperties(channelUpdateVo, channel);
+
+        if(channel.getParentId() == null) {
+            channel.setParentId(0L);
+        }
+
+        channel.setUpdateTime(new Date());
+
+        boolean update = channelService.updateById(channel);
+
+        if(update) {
+            return Result.ok(channel).message("Successfully updated channel");
+        }else {
+            return Result.fail().message("Failed to update channel");
         }
     }
 
