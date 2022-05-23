@@ -10,7 +10,6 @@ import com.yushun.blog.service.ChannelService;
 import com.yushun.blog.service.UserService;
 import com.yushun.blog.vo.admin.channel.ChannelQueryVo;
 import com.yushun.blog.vo.admin.channel.ChannelUpdateVo;
-import com.yushun.blog.vo.admin.user.UpdateUserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
