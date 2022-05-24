@@ -97,6 +97,14 @@ public class AdminUserController {
 
     @PutMapping("/updateUser")
     public Result updateUser(UpdateUserVo updateUserVo) {
+        List<User> userList = userService.list();
+
+        for(User user : userList) {
+            if(user.getUserName().equals(updateUserVo.getUserName())) {
+                return Result.fail().message("User already exists");
+            }
+        }
+
         User user = new User();
         BeanUtils.copyProperties(updateUserVo, user);
         user.setUpdateTime(new Date());
