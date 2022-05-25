@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yushun.blog.common.result.Result;
 import com.yushun.blog.common.utils.RequestUtils;
 import com.yushun.blog.model.channel.Channel;
-import com.yushun.blog.model.tag.Tag;
 import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.ChannelService;
 import com.yushun.blog.service.UserService;
@@ -147,8 +146,8 @@ public class AdminChannelController {
         return Result.ok(paginatedChannelList);
     }
 
-    @GetMapping("/getParentTreeDate")
-    public Result getParentTreeDate() {
+    @GetMapping("/getParentTreeData")
+    public Result getParentTreeData() {
         List<Channel> channelList = channelService.list();
         List<Map<String,Object>> mapList = new ArrayList<>();
 

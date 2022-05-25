@@ -12,9 +12,7 @@ import com.yushun.blog.model.channel.Channel;
 import com.yushun.blog.model.user.User;
 import com.yushun.blog.vo.ArticleVo;
 import com.yushun.blog.vo.Page;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
 
 /**
  * <p>
@@ -25,9 +23,7 @@ import lombok.EqualsAndHashCode;
  * @since 2022-5-17
  */
 
-@EqualsAndHashCode(callSuper = false)
 @TableName("tb_article")
-@ApiModel(value="Article对象", description="文章")
 public class Article extends BaseEntity implements Serializable  {
 
     private static final long serialVersionUID = 1L;
@@ -75,7 +71,6 @@ public class Article extends BaseEntity implements Serializable  {
     private User user;
 
     @TableField(exist = false)
-    @ApiModelProperty(value = "栏目")
     private Channel channel;
 
     @TableField(exist = false)
@@ -255,5 +250,31 @@ public class Article extends BaseEntity implements Serializable  {
 
     public void setFront(Boolean front) {
         this.front = front;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "channelId=" + channelId +
+                ", title='" + title + '\'' +
+                ", titleImg='" + titleImg + '\'' +
+                ", summary='" + summary + '\'' +
+                ", author='" + author + '\'' +
+                ", url='" + url + '\'' +
+                ", content='" + content + '\'' +
+                ", status=" + status +
+                ", commentStatus=" + commentStatus +
+                ", rotation=" + rotation +
+                ", top=" + top +
+                ", createUserId=" + createUserId +
+                ", articleView=" + articleView +
+                ", user=" + user +
+                ", channel=" + channel +
+                ", articleAttachments=" + articleAttachments +
+                ", selectTagList=" + selectTagList +
+                ", pageList=" + pageList +
+                ", articleVo=" + articleVo +
+                ", front=" + front +
+                '}';
     }
 }

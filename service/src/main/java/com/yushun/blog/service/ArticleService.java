@@ -1,6 +1,5 @@
 package com.yushun.blog.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yushun.blog.model.article.Article;
 
@@ -27,4 +26,6 @@ public interface ArticleService extends IService<Article> {
     List<Article> getToppedArticleByTagId(Long tagId);
 
     Article getArticleDetailByArticleId(Article article);
+
+    boolean addNewArticle(Article newArticle);
 }

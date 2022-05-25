@@ -249,4 +249,44 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         return articleDetail;
     }
+
+    @Override
+    public boolean addNewArticle(Article newArticle) {
+        Article article = new Article();
+        BeanUtils.copyProperties(newArticle, article);
+        article.setArticleView(0);
+        article.setCreateTime(new Date());
+        article.setUpdateTime(new Date());
+        article.setIsDeleted(0);
+
+        int insert = articleMapper.insert(article);
+
+        if(article.getArticleAttachments() != null) {
+            article.getArticleAttachments().forEach(item -> {
+                ArticleAttachment articleAttachment = new ArticleAttachment();
+                articleAttachment.setArticleId(article.getId());
+                articleAttachment.setDescription(item.get("name") + "");
+                articleAttachment.setUrl(item.get("url") + "");
+                articleAttachment.setCreateTime(new Date());
+                articleAttachment.setUpdateTime(new Date());
+                articleAttachment.setIsDeleted(0);
+                articleAttachmentMapper.insert(articleAttachment);
+            });
+        }
+
+
+        if(article.getSelectTagList() != null) {
+            article.getSelectTagList().forEach(tag -> {
+                ArticleTag articleTag = new ArticleTag();
+                articleTag.setArticleId(article.getId());
+                articleTag.setTagId(tag);
+                articleTag.setCreateTime(new Date());
+                articleTag.setUpdateTime(new Date());
+                articleTag.setIsDeleted(0);
+                articleTagMapper.insert(articleTag);
+            });
+        }
+
+        return insert == 1;
+    }
 }

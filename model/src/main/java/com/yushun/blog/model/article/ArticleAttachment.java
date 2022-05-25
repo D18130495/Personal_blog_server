@@ -21,7 +21,7 @@ public class ArticleAttachment extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableField("article_id")
-    private Integer articleId;
+    private Long articleId;
 
     @TableField("url")
     private String url;
@@ -36,11 +36,11 @@ public class ArticleAttachment extends BaseEntity implements Serializable {
         return serialVersionUID;
     }
 
-    public Integer getArticleId() {
+    public Long getArticleId() {
         return articleId;
     }
 
-    public void setArticleId(Integer articleId) {
+    public void setArticleId(Long articleId) {
         this.articleId = articleId;
     }
 

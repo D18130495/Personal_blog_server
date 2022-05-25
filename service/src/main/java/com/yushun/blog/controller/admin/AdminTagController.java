@@ -111,4 +111,11 @@ public class AdminTagController {
 
         return Result.ok(paginatedTagList);
     }
+
+    @GetMapping("/getTagList")
+    public Result getTagList() {
+        List<Tag> tagList = tagService.list();
+
+        return Result.ok(tagList);
+    }
 }
