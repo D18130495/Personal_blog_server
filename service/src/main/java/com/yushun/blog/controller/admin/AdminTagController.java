@@ -3,7 +3,6 @@ package com.yushun.blog.controller.admin;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yushun.blog.common.result.Result;
-import com.yushun.blog.model.friend.FriendLink;
 import com.yushun.blog.model.tag.Tag;
 import com.yushun.blog.service.TagService;
 import com.yushun.blog.vo.admin.tag.TagQueryVo;
