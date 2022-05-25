@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yushun.blog.common.result.Result;
 import com.yushun.blog.common.utils.RequestUtils;
 import com.yushun.blog.model.channel.Channel;
+import com.yushun.blog.model.tag.Tag;
 import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.ChannelService;
 import com.yushun.blog.service.UserService;
@@ -79,7 +80,9 @@ public class AdminChannelController {
 
     @PutMapping("/updateChannelByChannelId")
     public Result updateChannelByChannelId(ChannelUpdateVo channelUpdateVo) {
-        List<Channel> channelList = channelService.list();
+        QueryWrapper<Channel> wrapper = new QueryWrapper<>();
+        wrapper.notIn("id", channelUpdateVo.getId());
+        List<Channel> channelList = channelService.list(wrapper);
 
         for(Channel existsChannel : channelList) {
             if(existsChannel.getName().equals(channelUpdateVo.getName())) {

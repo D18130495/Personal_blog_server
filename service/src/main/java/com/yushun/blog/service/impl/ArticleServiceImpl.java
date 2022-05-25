@@ -8,6 +8,7 @@ import com.yushun.blog.model.article.Article;
 import com.yushun.blog.model.article.ArticleAttachment;
 import com.yushun.blog.model.article.ArticleTag;
 import com.yushun.blog.model.channel.Channel;
+import com.yushun.blog.model.tag.Tag;
 import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.ArticleService;
 import com.yushun.blog.vo.ArticleVo;
@@ -274,7 +275,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             });
         }
 
-
         if(article.getSelectTagList() != null) {
             article.getSelectTagList().forEach(tag -> {
                 ArticleTag articleTag = new ArticleTag();
@@ -288,5 +288,113 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
 
         return insert == 1;
+    }
+
+    @Override
+    public Article packageArticles(Article article) {
+        Long articleId = article.getId();
+
+        QueryWrapper<ArticleAttachment> attachmentQueryWrapper = new QueryWrapper<>();
+        attachmentQueryWrapper.eq("article_id", articleId);
+        List<ArticleAttachment> articleAttachmentList = articleAttachmentMapper.selectList(attachmentQueryWrapper);
+
+        List<Map<String,Object>> attachmentList = new ArrayList<>();
+        if(articleAttachmentList != null) {
+            for(ArticleAttachment articleAttachment: articleAttachmentList) {
+                Map<String, Object> attachment = new HashMap<>();
+                attachment.put("name", articleAttachment.getDescription());
+                attachment.put("url", articleAttachment.getUrl());
+                attachmentList.add(attachment);
+            }
+
+            article.setArticleAttachments(attachmentList);
+        }
+
+        QueryWrapper<ArticleTag> tagQueryWrapper = new QueryWrapper<>();
+        tagQueryWrapper.eq("article_id", articleId);
+        List<ArticleTag> articleTagList = articleTagMapper.selectList(tagQueryWrapper);
+
+        List<Long> tagIdList = new ArrayList<>();
+        if(articleTagList != null) {
+            for(ArticleTag articleTag: articleTagList) {
+                tagIdList.add(articleTag.getTagId());
+            }
+
+            article.setSelectTagList(tagIdList);
+        }
+
+        return article;
+    }
+
+    @Override
+    public boolean updateArticle(Article updateArticle) {
+        Article article = new Article();
+        BeanUtils.copyProperties(updateArticle, article);
+        article.setUpdateTime(new Date());
+
+        int update = articleMapper.updateById(article);
+
+        QueryWrapper<ArticleAttachment> attachmentQueryWrapper = new QueryWrapper<>();
+        attachmentQueryWrapper.eq("article_id", updateArticle.getId());
+        articleAttachmentMapper.delete(attachmentQueryWrapper);
+
+        QueryWrapper<ArticleTag> articleTagQueryWrapper = new QueryWrapper<>();
+        articleTagQueryWrapper.eq("article_id", updateArticle.getId());
+        articleTagMapper.delete(articleTagQueryWrapper);
+
+        if(article.getArticleAttachments() != null) {
+            article.getArticleAttachments().forEach(item -> {
+                ArticleAttachment articleAttachment = new ArticleAttachment();
+                articleAttachment.setArticleId(article.getId());
+                articleAttachment.setDescription(item.get("name") + "");
+                articleAttachment.setUrl(item.get("url") + "");
+                articleAttachment.setCreateTime(new Date());
+                articleAttachment.setUpdateTime(new Date());
+                articleAttachment.setIsDeleted(0);
+                articleAttachmentMapper.insert(articleAttachment);
+            });
+        }
+
+        if(article.getSelectTagList() != null) {
+            article.getSelectTagList().forEach(tag -> {
+                ArticleTag articleTag = new ArticleTag();
+                articleTag.setArticleId(article.getId());
+                articleTag.setTagId(tag);
+                articleTag.setCreateTime(new Date());
+                articleTag.setUpdateTime(new Date());
+                articleTag.setIsDeleted(0);
+                articleTagMapper.insert(articleTag);
+            });
+        }
+
+//        QueryWrapper<ArticleTag> articleTagQueryWrapper = new QueryWrapper<>();
+//        articleTagQueryWrapper.eq("article_id", updateArticle.getId()).notIn("tag_id", updateArticle.getSelectTagList());
+//        articleTagMapper.delete(articleTagQueryWrapper);
+//
+//        QueryWrapper<ArticleTag> currentArticleTagQueryWrapper = new QueryWrapper<>();
+//        currentArticleTagQueryWrapper.eq("article_id", updateArticle.getId());
+//        List<ArticleTag> currentArticleTagList = articleTagMapper.selectList(currentArticleTagQueryWrapper);
+//
+//        if(article.getSelectTagList() != null) {
+//            article.getSelectTagList().forEach(tag -> {
+//                if() {
+//                    QueryWrapper<ArticleTag> tagWrapper = new QueryWrapper<>();
+//                    tagWrapper.eq("article_id", updateArticle.getId()).eq("tag_id", tag);
+//                    ArticleTag articleTag = articleTagMapper.selectOne(tagWrapper);
+//                    articleTag.setUpdateTime(new Date());
+//                    articleTagMapper.updateById(articleTag);
+//                }else {
+//                    ArticleTag articleTag = new ArticleTag();
+//                    articleTag.setArticleId(article.getId());
+//                    articleTag.setTagId(tag);
+//                    articleTag.setCreateTime(new Date());
+//                    articleTag.setUpdateTime(new Date());
+//                    articleTag.setIsDeleted(0);
+//                    articleTagMapper.insert(articleTag);
+//                }
+//            });
+//        }
+
+        return update == 1;
     }
 }

@@ -13,6 +13,7 @@ import com.yushun.blog.service.ArticleService;
 import com.yushun.blog.service.TagService;
 import com.yushun.blog.service.UserService;
 import com.yushun.blog.vo.admin.article.ArticleQueryVo;
+import com.yushun.blog.vo.admin.channel.ChannelUpdateVo;
 import com.yushun.blog.vo.admin.friend.FriendLinkQueryVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,9 @@ public class AdminArticleController {
     public Result getArticleDataByArticleId(@PathVariable Long articleId) {
         Article article = articleService.getById(articleId);
 
-        return Result.ok(article);
+        Article packagedArticle = articleService.packageArticles(article);
+
+        return Result.ok(packagedArticle);
     }
 
     @PostMapping("/addNewArticle")
@@ -69,6 +72,45 @@ public class AdminArticleController {
             return Result.ok().message("Successfully added new article");
         }else {
             return Result.fail().message("Failed to add new article");
+        }
+    }
+
+    @PutMapping("/updateArticleByArticleId")
+    public Result updateArticleByArticleId(@RequestBody Article updateArticle) {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.notIn("id", updateArticle.getId());
+        List<Article> articleList = articleService.list(wrapper);
+
+        for(Article existsArticle : articleList) {
+            if(existsArticle.getTitle().equals(updateArticle.getTitle())) {
+                return Result.fail().message("Article already exists");
+            }
+        }
+
+        updateArticle.setUpdateTime(new Date());
+
+        boolean update = articleService.updateArticle(updateArticle);
+
+        if(update) {
+            return Result.ok().message("Successfully updated article");
+        }else {
+            return Result.fail().message("Failed to update article");
+        }
+    }
+
+    @DeleteMapping("/deleteArticleById/{articleId}")
+    public Result deleteArticleById(@PathVariable Long articleId) {
+        Article article = articleService.getById(articleId);
+        article.setUpdateTime(new Date());
+
+        boolean update = articleService.updateById(article);
+
+        boolean delete = articleService.removeById(articleId);
+
+        if(update && delete) {
+            return Result.ok().message("Successfully deleted article");
+        }else {
+            return Result.fail().message("Failed to delete article");
         }
     }
 

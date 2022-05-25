@@ -28,4 +28,8 @@ public interface ArticleService extends IService<Article> {
     Article getArticleDetailByArticleId(Article article);
 
     boolean addNewArticle(Article newArticle);
+
+    Article packageArticles(Article article);
+
+    boolean updateArticle(Article updateArticle);
 }

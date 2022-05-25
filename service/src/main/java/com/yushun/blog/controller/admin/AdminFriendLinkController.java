@@ -65,7 +65,9 @@ public class AdminFriendLinkController {
 
     @PutMapping("/updateFriendLinkByFriendLinkId")
     public Result updateFriendLinkByFriendLinkId(FriendLinkUpdateVo friendLinkUpdateVo) {
-        List<FriendLink> friendLinkList = friendLinkService.list();
+        QueryWrapper<FriendLink> wrapper = new QueryWrapper<>();
+        wrapper.notIn("id", friendLinkUpdateVo.getId());
+        List<FriendLink> friendLinkList = friendLinkService.list(wrapper);
 
         for(FriendLink existsFriendLink : friendLinkList) {
             if(existsFriendLink.getTitle().equals(friendLinkUpdateVo.getTitle())) {

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yushun.blog.common.result.Result;
 import com.yushun.blog.common.utils.JwtUtils;
 import com.yushun.blog.common.utils.RequestUtils;
+import com.yushun.blog.model.channel.Channel;
 import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.UserService;
 import com.yushun.blog.vo.admin.user.NewUserVo;
@@ -97,7 +98,9 @@ public class AdminUserController {
 
     @PutMapping("/updateUser")
     public Result updateUser(UpdateUserVo updateUserVo) {
-        List<User> userList = userService.list();
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.notIn("id", updateUserVo.getId());
+        List<User> userList = userService.list(wrapper);
 
         for(User user : userList) {
             if(user.getUserName().equals(updateUserVo.getUserName())) {

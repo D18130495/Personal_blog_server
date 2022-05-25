@@ -3,6 +3,7 @@ package com.yushun.blog.controller.admin;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yushun.blog.common.result.Result;
+import com.yushun.blog.model.friend.FriendLink;
 import com.yushun.blog.model.tag.Tag;
 import com.yushun.blog.service.TagService;
 import com.yushun.blog.vo.admin.tag.TagQueryVo;
@@ -58,7 +59,9 @@ public class AdminTagController {
 
     @PutMapping("/updateTagByTagId")
     public Result updateTagByTagId(TagUpdateVo tagUpdateVo) {
-        List<Tag> tagList = tagService.list();
+        QueryWrapper<Tag> wrapper = new QueryWrapper<>();
+        wrapper.notIn("id", tagUpdateVo.getId());
+        List<Tag> tagList = tagService.list(wrapper);
 
         for(Tag existsTag : tagList) {
             if(existsTag.getTagName().equals(tagUpdateVo.getTagName())) {
