@@ -12,7 +12,9 @@ import com.yushun.blog.model.channel.Channel;
 import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.ArticleService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yushun.blog.vo.admin.article.ArticleQueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -83,23 +85,26 @@ public class FrontArticleController {
 
         Page<Article> paginatedArticlesList = articleService.page(page, wrapper);
 
-        for(Article article : paginatedArticlesList.getRecords()) {
-            QueryWrapper<User> userWrapper = new QueryWrapper<>();
-            userWrapper.eq("id", article.getCreateUserId());
-            User user = userMapper.selectOne(userWrapper);
+        if(paginatedArticlesList != null) {
+            for (Article article : paginatedArticlesList.getRecords()) {
+                QueryWrapper<User> userWrapper = new QueryWrapper<>();
+                userWrapper.eq("id", article.getCreateUserId());
+                User user = userMapper.selectOne(userWrapper);
 
-            QueryWrapper<Channel> channelWrapper = new QueryWrapper<>();
-            channelWrapper.eq("id", article.getChannelId());
-            Channel channel = channelMapper.selectOne(channelWrapper);
+                QueryWrapper<Channel> channelWrapper = new QueryWrapper<>();
+                channelWrapper.eq("id", article.getChannelId());
+                Channel channel = channelMapper.selectOne(channelWrapper);
 
-            article.setChannel(channel);
+                article.setChannel(channel);
 
-            if(user != null) {
-                article.setUser(user);
-            }else {
-                article.setUser(UserNullUtils.userIsNull());
+                if (user != null) {
+                    article.setUser(user);
+                } else {
+                    article.setUser(UserNullUtils.userIsNull());
+                }
             }
         }
+
         return Result.ok(paginatedArticlesList);
     }
 
@@ -201,6 +206,43 @@ public class FrontArticleController {
 
         paginatedArticlesList.put("records", subList);
         paginatedArticlesList.put("total", articleList.size());
+
+        return Result.ok(paginatedArticlesList);
+    }
+
+    @GetMapping("/getArticleQueryPaginatedList/{current}/{limit}")
+    public Result getArticleQueryPaginatedList(@PathVariable Long current,
+                                               @PathVariable Long limit,
+                                               ArticleQueryVo articleQueryVo){
+        Page<Article> page = new Page<>(current, limit);
+
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+
+        if(!StringUtils.isEmpty(articleQueryVo.getTitle())) {
+            wrapper.like("title", articleQueryVo.getTitle());
+        }
+
+        Page<Article> paginatedArticlesList = articleService.page(page, wrapper);
+
+        if(paginatedArticlesList != null) {
+            for(Article article : paginatedArticlesList.getRecords()) {
+                QueryWrapper<User> userWrapper = new QueryWrapper<>();
+                userWrapper.eq("id", article.getCreateUserId());
+                User user = userMapper.selectOne(userWrapper);
+
+                QueryWrapper<Channel> channelWrapper = new QueryWrapper<>();
+                channelWrapper.eq("id", article.getChannelId());
+                Channel channel = channelMapper.selectOne(channelWrapper);
+
+                article.setChannel(channel);
+
+                if(user != null) {
+                    article.setUser(user);
+                }else {
+                    article.setUser(UserNullUtils.userIsNull());
+                }
+            }
+        }
 
         return Result.ok(paginatedArticlesList);
     }
