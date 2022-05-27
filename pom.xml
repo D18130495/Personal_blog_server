@@ -15,7 +15,7 @@
     </parent>
     <groupId>com.yushun</groupId>
     <artifactId>Personal_blog</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>Personal_blog</name>
     <description>Personal blog backend server</description>
