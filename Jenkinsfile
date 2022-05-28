@@ -6,8 +6,8 @@ node {
     }
     stage('Build code') {
         sh "mvn model clean install"
-        sh "mvn common clean install"
-        sh "mvn service clean package"
+//         sh "mvn common clean install"
+//         sh "mvn service clean package"
 //         sh "mvn clean install -pl service -am"
     }
     stage('Results') {
