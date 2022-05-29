@@ -145,7 +145,7 @@ public class AdminArticleController {
         String ex = originalFilename.substring(originalFilename.lastIndexOf(".") + 1,originalFilename.length());
         String newFileNamePrefix = UUID.randomUUID().toString();
         String newFileName = newFileNamePrefix + "." + ex;
-        file.transferTo(new File("E:/Personal_blog/Personal_blog_client/public/images/article", newFileName));
+        file.transferTo(new File("/data/app/personal_blog_client/dist/images/article", newFileName));
 
         return Result.ok(RequestUtils.getBasePath(request) + "images/article/" + newFileName).message("Successfully uploaded article image");
     }

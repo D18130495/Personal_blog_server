@@ -37,7 +37,7 @@
     </sql>
 
     <select id="getRandomArticle" resultMap="Article">
-        SELECT id, title FROM `tb_article` ORDER BY RAND() LIMIT 2
+        SELECT id, title, title_img FROM `tb_article` ORDER BY RAND() LIMIT 2
     </select>
 
     <select id="queryArticleByChannelId" resultMap="Article">

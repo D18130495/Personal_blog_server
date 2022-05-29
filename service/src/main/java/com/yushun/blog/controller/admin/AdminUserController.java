@@ -165,7 +165,7 @@ public class AdminUserController {
         String ex = originalFilename.substring(originalFilename.lastIndexOf(".") + 1, originalFilename.length());
         String newFileNamePrefix = UUID.randomUUID().toString();
         String newFileName = newFileNamePrefix + "." + ex;
-        file.transferTo(new File("E:/Personal_blog/Personal_blog_client/public/images/avatar", newFileName));
+        file.transferTo(new File("/data/app/personal_blog_client/dist/images/avatar", newFileName));
 
         return Result.ok(RequestUtils.getBasePath(request) + "images/avatar/" + newFileName).message("Successfully uploaded avatar");
     }
