@@ -141,4 +141,14 @@ public class FrontChannelController {
         }
         return Result.ok(paginatedArticlesList);
     }
+
+    @GetMapping("/getChildrenChannelListByParentChannelId/{channelId}")
+    public Result getChildrenChannelListByParentChannelId(@PathVariable Long channelId) {
+        QueryWrapper<Channel> wrapper = new QueryWrapper<>();
+        wrapper.eq("parent_id", channelId);
+
+        List<Channel> channelList = channelService.list(wrapper);
+
+        return Result.ok(channelList);
+    }
 }
