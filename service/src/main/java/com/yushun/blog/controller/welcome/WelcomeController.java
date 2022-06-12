@@ -18,6 +18,7 @@ public class WelcomeController {
     @GetMapping("")
     public String welcome() {
         String welcome = "Welcome to yushun's personal blog back-end.";
+        
         return welcome;
     }
 }
