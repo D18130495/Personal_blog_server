@@ -147,6 +147,6 @@ public class AdminArticleController {
         String newFileName = newFileNamePrefix + "." + ex;
         file.transferTo(new File("/data/app/personal_blog_client/dist/images/article", newFileName));
 
-        return Result.ok(RequestUtils.getBasePath(request) + "images/article/" + newFileName).message("Successfully uploaded article image");
+        return Result.ok("https://huaruoyumu.com/images/article/" + newFileName).message("Successfully uploaded article image");
     }
 }

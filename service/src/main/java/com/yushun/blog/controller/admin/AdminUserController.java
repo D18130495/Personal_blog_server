@@ -167,6 +167,6 @@ public class AdminUserController {
         String newFileName = newFileNamePrefix + "." + ex;
         file.transferTo(new File("/data/app/personal_blog_client/dist/images/avatar", newFileName));
 
-        return Result.ok(RequestUtils.getBasePath(request) + "images/avatar/" + newFileName).message("Successfully uploaded avatar");
+        return Result.ok("https://huaruoyumu.com/images/avatar/" + newFileName).message("Successfully uploaded avatar");
     }
 }

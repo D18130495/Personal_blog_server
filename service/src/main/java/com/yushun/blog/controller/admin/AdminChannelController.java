@@ -186,7 +186,7 @@ public class AdminChannelController {
         String newFileNamePrefix = UUID.randomUUID().toString();
         String newFileName = newFileNamePrefix + "." + ex;
         file.transferTo(new File("/data/app/personal_blog_client/dist/images/channel", newFileName));
-
-        return Result.ok(RequestUtils.getBasePath(request) + "images/channel/" + newFileName).message("Successfully uploaded channel image");
+//        RequestUtils.getBasePath(request) +
+        return Result.ok("https://huaruoyumu.com/images/channel/" + newFileName).message("Successfully uploaded channel image");
     }
 }
