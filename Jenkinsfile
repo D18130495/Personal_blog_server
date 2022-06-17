@@ -9,7 +9,7 @@ node {
     stage('Maven build code') {
 		//sh "mvn -f clean install model"  
 		//sh "mvn common clean install"
-		//sh "mvn service clean package"  
+		//sh "mvn service clean package"
 		sh "mvn clean install -pl com.yushun:service -am"
     }
     stage('Results') {
