@@ -10,7 +10,7 @@ node {
 		//sh "mvn -f clean install model"  
 		//sh "mvn common clean install"
 		//sh "mvn service clean package"
-		sh "mvn clean install -pl service -am"
+		mvn clean install -pl service -am
     }
     stage('Results') {
          echo 'deploy code'
