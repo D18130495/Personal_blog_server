@@ -14,7 +14,7 @@ node {
     }
     stage('Results') {
         echo 'kill old jar and remove it'
-        sh "kill -9 $(lsof -i:9001 -t)"
+//         sh "kill -9 $(lsof -i:9001 -t)"
         sh "rm -rf /data/app/personal_blog_server"
         echo 'move jar to /data/app/personal_blog_server'
         sh "mv /var/lib/jenkins/workspace/personal_blog/service/target/service-0.0.1-SNAPSHOT.jar /data/app/personal_blog_server"
