@@ -18,6 +18,6 @@ node {
         echo 'Move jar to /data/app/personal_blog_server'
         sh "sudo mv /var/lib/jenkins/workspace/personal_blog/service/target/service-0.0.1-SNAPSHOT.jar /data/app/personal_blog_server"
         echo 'Run deploy.sh to deploy jar'
-        sh "sudo JENKINS_NODE_COOKIE=dontKillMe /data/app/personal_blog_server/sh/deploy.sh stop service-0.0.1-SNAPSHOT.jar"
+        sh "sudo JENKINS_NODE_COOKIE=dontKillMe /data/app/personal_blog_server/sh/deploy.sh restart service-0.0.1-SNAPSHOT.jar"
     }
 }
