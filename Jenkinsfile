@@ -10,14 +10,14 @@ node {
 		//sh "mvn -f clean install model"  
 		//sh "mvn common clean install"
 		//sh "mvn service clean package"
-// 		sh "mvn clean install -pl com.yushun:service -am"
+		sh "mvn clean install -pl com.yushun:service -am"
     }
     stage('Results') {
-//         echo 'kill old jar and remove it'
-// //         sh "kill -9 $(lsof -i:9001 -t)"
-//         sh "sudo rm -rf /data/app/personal_blog_server"
-        echo 'move jar to /data/app/personal_blog_server'
-        sh "sudo mv /var/lib/jenkins/workspace/personal_blog/service/target/service-0.0.1-SNAPSHOT.jar /data/app/personal_blog_server/test"
-//         echo 'deploy code' 
+        echo 'Remove jar'
+        sh "sudo rm /data/app/personal_blog_server/service-0.0.1-SNAPSHOT.jar"
+        echo 'Move jar to /data/app/personal_blog_server'
+        sh "sudo mv /var/lib/jenkins/workspace/personal_blog/service/target/service-0.0.1-SNAPSHOT.jar /data/app/personal_blog_server"
+        echo 'Run deploy.sh to deploy jar'
+        sh "sudo JENKINS_NODE_COOKIE=dontKillMe /data/app/personal_blog_server/sh/deploy.sh stop service-0.0.1-SNAPSHOT.jar"
     }
 }
