@@ -13,4 +13,5 @@ import com.yushun.blog.model.tag.Tag;
  */
 
 public interface TagService extends IService<Tag> {
+    boolean checkIfTagCanBeRemoved(Long tagId);
 }

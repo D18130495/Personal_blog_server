@@ -83,12 +83,20 @@ public class AdminTagController {
 
     @DeleteMapping("/deleteTagById/{tagId}")
     public Result deleteTagById(@PathVariable Long tagId) {
+        boolean delete = false;
+
         Tag tag = tagService.getById(tagId);
         tag.setUpdateTime(new Date());
 
         boolean update = tagService.updateById(tag);
 
-        boolean delete = tagService.removeById(tagId);
+        boolean deletable = tagService.checkIfTagCanBeRemoved(tagId);
+
+        if(deletable) {
+            delete = tagService.removeById(tagId);
+        }else {
+            return Result.fail().message("Can not delete this tag");
+        }
 
         if(update && delete) {
             return Result.ok().message("Successfully deleted tag");
