@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yushun.blog.common.result.Result;
 import com.yushun.blog.common.utils.UserNullUtils;
+import com.yushun.blog.mapper.ArticleTagMapper;
 import com.yushun.blog.model.article.Article;
 import com.yushun.blog.model.article.ArticleTag;
 import com.yushun.blog.model.channel.Channel;
 import com.yushun.blog.model.tag.Tag;
 import com.yushun.blog.model.user.User;
+import com.yushun.blog.service.ArticleTagService;
 import com.yushun.blog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,9 @@ public class FrontTagController {
     @Autowired
     private TagService tagService;
 
+    @Autowired
+    private ArticleTagService articleTagService;
+
     @GetMapping("/getAllTag")
     public Result getAllTag() {
         List<Tag> tagList = tagService.list();
@@ -44,5 +49,26 @@ public class FrontTagController {
         Tag tag = tagService.getById(tagId);
 
         return Result.ok(tag);
+    }
+
+    @GetMapping("/getArticleRelatedTagByArticleId/{articleId}")
+    public Result getArticleRelatedTagByArticleId(@PathVariable Long articleId) {
+        QueryWrapper<ArticleTag> wrapper = new QueryWrapper<>();
+        wrapper.eq("article_id", articleId);
+
+        List<ArticleTag> articleTagList = articleTagService.list(wrapper);
+
+        if(articleTagList.isEmpty()) {
+            return Result.ok();
+        }else {
+            List<Tag> tagList = new ArrayList<>();
+
+            for(ArticleTag articleTag : articleTagList) {
+                Tag tag = tagService.getById(articleTag.getTagId());
+                tagList.add(tag);
+            }
+
+            return Result.ok(tagList);
+        }
     }
 }
