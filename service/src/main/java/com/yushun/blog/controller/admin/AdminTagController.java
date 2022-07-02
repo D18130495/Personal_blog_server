@@ -9,6 +9,7 @@ import com.yushun.blog.vo.admin.tag.TagQueryVo;
 import com.yushun.blog.vo.admin.tag.TagUpdateVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,9 @@ import java.util.List;
  *
  * @author yushun zeng
  * @since 2022-5-24
+ *
+ * CacheEvict for remove cache when admin user add, update and delete tag
+ *
  */
 
 @CrossOrigin
@@ -31,6 +35,7 @@ public class AdminTagController {
     @Autowired
     private TagService tagService;
 
+    @CacheEvict(value="tag", allEntries = true)
     @PostMapping("/addNewTag")
     public Result addNewTag(Tag newTag) {
         List<Tag> tagList = tagService.list();
@@ -56,6 +61,7 @@ public class AdminTagController {
         }
     }
 
+    @CacheEvict(value="tag", allEntries = true)
     @PutMapping("/updateTagByTagId")
     public Result updateTagByTagId(TagUpdateVo tagUpdateVo) {
         QueryWrapper<Tag> wrapper = new QueryWrapper<>();
@@ -81,6 +87,7 @@ public class AdminTagController {
         }
     }
 
+    @CacheEvict(value="tag", allEntries = true)
     @DeleteMapping("/deleteTagById/{tagId}")
     public Result deleteTagById(@PathVariable Long tagId) {
         boolean delete = false;
@@ -122,6 +129,7 @@ public class AdminTagController {
         return Result.ok(paginatedTagList);
     }
 
+    // use for admin article add and edit display
     @GetMapping("/getTagList")
     public Result getTagList() {
         List<Tag> tagList = tagService.list();

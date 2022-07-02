@@ -1,6 +1,7 @@
 package com.yushun.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yushun.blog.common.utils.UserNullUtils;
 import com.yushun.blog.mapper.*;
@@ -8,12 +9,12 @@ import com.yushun.blog.model.article.Article;
 import com.yushun.blog.model.article.ArticleAttachment;
 import com.yushun.blog.model.article.ArticleTag;
 import com.yushun.blog.model.channel.Channel;
-import com.yushun.blog.model.tag.Tag;
 import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.ArticleService;
 import com.yushun.blog.vo.ArticleVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,6 +26,9 @@ import java.util.*;
  *
  * @author yushun zeng
  * @since 2022-5-17
+ *
+ * Cacheable for main page bottom article display
+ *
  */
 
 @Service
@@ -74,6 +78,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
+    @Cacheable(value="toppedArticle", keyGenerator="keyGenerator")
     public List<Article> getToppedArticleList(){
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
         wrapper.eq("top", 1);
@@ -396,5 +401,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 //        }
 
         return update == 1;
+    }
+
+    @Override
+    public Page<Article> getPaginatedArticlesList(Page<Article> page, QueryWrapper<Article> wrapper) {
+        Page<Article> paginatedArticlesList = baseMapper.selectPage(page, wrapper);
+
+        return paginatedArticlesList;
     }
 }

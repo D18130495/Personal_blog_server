@@ -26,7 +26,7 @@ public class FrontFriendLinkController {
 
     @GetMapping("/getAllFriendLinkList")
     public Result getAllTag() {
-        List<FriendLink> friendLinkList = friendLinkService.list();
+        List<FriendLink> friendLinkList = friendLinkService.getAllFriendLinkList();
 
         return Result.ok(friendLinkList);
     }

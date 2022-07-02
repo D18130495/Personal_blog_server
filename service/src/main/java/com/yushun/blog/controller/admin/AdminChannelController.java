@@ -13,6 +13,8 @@ import com.yushun.blog.vo.admin.channel.ChannelQueryVo;
 import com.yushun.blog.vo.admin.channel.ChannelUpdateVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +31,9 @@ import java.util.*;
  *
  * @author yushun zeng
  * @since 2022-5-23
+ *
+ * CacheEvict for remove cache when admin user add, update and delete channel
+ *
  */
 
 @CrossOrigin
@@ -48,6 +53,7 @@ public class AdminChannelController {
         return Result.ok(channel);
     }
 
+    @CacheEvict(value="channel", allEntries = true)
     @PostMapping("/addNewChannel")
     public Result addNewChannel(Channel newChannel) {
         List<Channel> channelList = channelService.list();
@@ -78,6 +84,7 @@ public class AdminChannelController {
         }
     }
 
+    @CacheEvict(value="channel", allEntries = true)
     @PutMapping("/updateChannelByChannelId")
     public Result updateChannelByChannelId(ChannelUpdateVo channelUpdateVo) {
         QueryWrapper<Channel> wrapper = new QueryWrapper<>();
@@ -108,6 +115,7 @@ public class AdminChannelController {
         }
     }
 
+    @CacheEvict(value="channel", allEntries = true)
     @DeleteMapping("/deleteChannelById/{channelId}")
     public Result deleteChannelById(@PathVariable Long channelId) {
         Channel channel = channelService.getById(channelId);

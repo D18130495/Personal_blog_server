@@ -9,6 +9,7 @@ import com.yushun.blog.vo.admin.friend.FriendLinkQueryVo;
 import com.yushun.blog.vo.admin.friend.FriendLinkUpdateVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class AdminFriendLinkController {
         return Result.ok(friendLink);
     }
 
+    @CacheEvict(value="friendLink", allEntries = true)
     @PostMapping("/addNewFriendLink")
     public Result addNewFriendLink(FriendLink newFriendLink) {
         List<FriendLink> friendLinkList = friendLinkService.list();
@@ -63,6 +65,7 @@ public class AdminFriendLinkController {
         }
     }
 
+    @CacheEvict(value="friendLink", allEntries = true)
     @PutMapping("/updateFriendLinkByFriendLinkId")
     public Result updateFriendLinkByFriendLinkId(FriendLinkUpdateVo friendLinkUpdateVo) {
         QueryWrapper<FriendLink> wrapper = new QueryWrapper<>();
@@ -88,6 +91,7 @@ public class AdminFriendLinkController {
         }
     }
 
+    @CacheEvict(value="friendLink", allEntries = true)
     @DeleteMapping("/deleteFriendLinkById/{friendLinkId}")
     public Result deleteFriendLinkById(@PathVariable Long friendLinkId) {
         FriendLink friendLink = friendLinkService.getById(friendLinkId);

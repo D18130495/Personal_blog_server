@@ -1,5 +1,7 @@
 package com.yushun.blog.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yushun.blog.model.article.Article;
 
@@ -32,4 +34,6 @@ public interface ArticleService extends IService<Article> {
     Article packageArticles(Article article);
 
     boolean updateArticle(Article updateArticle);
+
+    Page<Article> getPaginatedArticlesList(Page<Article> page, QueryWrapper<Article> wrapper);
 }

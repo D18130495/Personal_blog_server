@@ -17,6 +17,7 @@ import com.yushun.blog.vo.admin.channel.ChannelUpdateVo;
 import com.yushun.blog.vo.admin.friend.FriendLinkQueryVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +36,9 @@ import java.util.UUID;
  *
  * @author yushun zeng
  * @since 2022-5-24
+ *
+ * CacheEvict for remove cache when admin user add, update and delete article
+ *
  */
 
 @CrossOrigin
@@ -56,6 +60,7 @@ public class AdminArticleController {
         return Result.ok(packagedArticle);
     }
 
+    @CacheEvict(value="toppedArticle", allEntries = true)
     @PostMapping("/addNewArticle")
     public Result addNewArticle(@RequestBody Article newArticle) {
         List<Article> articleList = articleService.list();
@@ -75,6 +80,7 @@ public class AdminArticleController {
         }
     }
 
+    @CacheEvict(value="toppedArticle", allEntries = true)
     @PutMapping("/updateArticleByArticleId")
     public Result updateArticleByArticleId(@RequestBody Article updateArticle) {
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
@@ -98,6 +104,7 @@ public class AdminArticleController {
         }
     }
 
+    @CacheEvict(value="toppedArticle", allEntries = true)
     @DeleteMapping("/deleteArticleById/{articleId}")
     public Result deleteArticleById(@PathVariable Long articleId) {
         Article article = articleService.getById(articleId);

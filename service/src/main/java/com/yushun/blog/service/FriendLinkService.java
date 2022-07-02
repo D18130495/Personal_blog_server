@@ -3,6 +3,8 @@ package com.yushun.blog.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yushun.blog.model.friend.FriendLink;
 
+import java.util.List;
+
 /**
  * <p>
  * friend link service
@@ -13,4 +15,5 @@ import com.yushun.blog.model.friend.FriendLink;
  */
 
 public interface FriendLinkService extends IService<FriendLink> {
+    List<FriendLink> getAllFriendLinkList();
 }

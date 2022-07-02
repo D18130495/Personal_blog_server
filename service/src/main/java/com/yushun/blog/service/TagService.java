@@ -3,6 +3,8 @@ package com.yushun.blog.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yushun.blog.model.tag.Tag;
 
+import java.util.List;
+
 /**
  * <p>
  * tag service
@@ -14,4 +16,6 @@ import com.yushun.blog.model.tag.Tag;
 
 public interface TagService extends IService<Tag> {
     boolean checkIfTagCanBeRemoved(Long tagId);
+
+    List<Tag> getAllTag();
 }

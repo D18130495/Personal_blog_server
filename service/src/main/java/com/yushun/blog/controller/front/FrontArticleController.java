@@ -83,7 +83,8 @@ public class FrontArticleController {
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
         wrapper.eq("top", 0);
 
-        Page<Article> paginatedArticlesList = articleService.page(page, wrapper);
+//        Page<Article> paginatedArticlesList = articleService.page(page, wrapper);
+        Page<Article> paginatedArticlesList = articleService.getPaginatedArticlesList(page, wrapper);
 
         if(paginatedArticlesList != null) {
             for (Article article : paginatedArticlesList.getRecords()) {

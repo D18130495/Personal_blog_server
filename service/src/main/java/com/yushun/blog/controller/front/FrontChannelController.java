@@ -12,6 +12,7 @@ import com.yushun.blog.model.user.User;
 import com.yushun.blog.service.ArticleService;
 import com.yushun.blog.service.ChannelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,17 +45,6 @@ public class FrontChannelController {
 
     @Autowired
     private ChannelMapper channelMapper;
-
-//    @GetMapping("/findAll")
-//    public Result findAllChannel() {
-//        List<Channel> list = channelService.list();
-//        return Result.ok(list);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void remove(@PathVariable Long id) {
-//        channelService.removeById(id);
-//    }
 
     @GetMapping("/getChannelByChannelId/{channelId}")
     public Result getChannelByChannelId(@PathVariable Long channelId){
