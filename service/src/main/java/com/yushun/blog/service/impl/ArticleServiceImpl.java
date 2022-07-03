@@ -78,7 +78,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    @Cacheable(value="toppedArticle", keyGenerator="keyGenerator")
+//    @Cacheable(value="toppedArticle", keyGenerator="keyGenerator")
     public List<Article> getToppedArticleList(){
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
         wrapper.eq("top", 1);
