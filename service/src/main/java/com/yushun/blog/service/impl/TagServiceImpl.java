@@ -41,7 +41,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     }
 
     @Override
-    @Cacheable(value="tag", keyGenerator="keyGenerator")
+//    @Cacheable(value="tag", keyGenerator="keyGenerator")
     public List<Tag> getAllTag() {
         QueryWrapper<Tag> wrapper = new QueryWrapper<>();
 

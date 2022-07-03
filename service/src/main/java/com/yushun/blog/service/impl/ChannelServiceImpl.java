@@ -26,7 +26,7 @@ import java.util.List;
 public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> implements ChannelService {
 
     @Override
-    @Cacheable(value="channel", keyGenerator="keyGenerator")
+//    @Cacheable(value="channel", keyGenerator="keyGenerator")
     public List<Channel> getChannelByPos(String pos) {
         QueryWrapper<Channel> wrapper = new QueryWrapper<>();
         wrapper.eq("pos", pos);

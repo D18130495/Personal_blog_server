@@ -25,7 +25,7 @@ import java.util.List;
 @Service
 public class FriendLinkServiceImpl extends ServiceImpl<FriendLinkMapper, FriendLink> implements FriendLinkService {
     @Override
-    @Cacheable(value="friendLink", keyGenerator="keyGenerator")
+//    @Cacheable(value="friendLink", keyGenerator="keyGenerator")
     public List<FriendLink> getAllFriendLinkList() {
         QueryWrapper<FriendLink> wrapper = new QueryWrapper<>();
 
