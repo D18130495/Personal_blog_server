@@ -13,7 +13,7 @@ node {
 		sh "mvn clean install -pl com.yushun:service -am"
     }
     stage('Results') {
-        echo 'Remove old jar'
+        //echo 'Remove old jar'
         //sh "sudo rm /data/app/personal_blog_server/service-0.0.1-SNAPSHOT.jar"
         echo 'Move new jar to /root/app/personal_blog_server and replace old jar'
         sh "sudo mv /var/lib/jenkins/workspace/personal_blog/service/target/service-0.0.1-SNAPSHOT.jar /root/app/personal_blog_server"
