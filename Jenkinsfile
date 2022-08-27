@@ -3,8 +3,8 @@ def project_url = "https://github.com/D18130495/Personal_blog_server.git"
 node {
     def mvnHome
     stage('Pull code from github') {
-		//checkout([$class: 'GitSCM', branches: [[name: '*/main']],
-		//extensions: [], userRemoteConfigs: [[url: "${project_url}"]]])
+		checkout([$class: 'GitSCM', branches: [[name: '*/main']],
+		extensions: [], userRemoteConfigs: [[url: "${project_url}"]]])
     }
     stage('Maven build code') {
 		//sh "mvn -f clean install model"  
