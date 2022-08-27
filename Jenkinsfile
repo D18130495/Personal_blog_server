@@ -15,9 +15,9 @@ node {
     stage('Results') {
         echo 'Remove jar'
         //sh "sudo rm /data/app/personal_blog_server/service-0.0.1-SNAPSHOT.jar"
-        //echo 'Move jar to /data/app/personal_blog_server'
+        echo 'Move jar to /data/app/personal_blog_server'
         //sh "sudo mv /var/lib/jenkins/workspace/personal_blog/service/target/service-0.0.1-SNAPSHOT.jar /data/app/personal_blog_server"
-        //echo 'Run deploy.sh to deploy jar'
+        echo 'Run deploy.sh to deploy jar'
         //sh "sudo JENKINS_NODE_COOKIE=dontKillMe /data/app/personal_blog_server/sh/deploy.sh restart service-0.0.1-SNAPSHOT.jar"
     }
 }
