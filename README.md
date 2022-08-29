@@ -23,7 +23,6 @@ git push git@github.com:D18130495/Personal_blog_server.git --delete master
 1. Tag can only be deleted when none of articles have this tag.
 
 
-
 #### Comment
 
 #### User
